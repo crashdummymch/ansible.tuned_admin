@@ -1,0 +1,3 @@
+{% if tuned_admin_profile != '' and tuned_admin_profile != 'off' %}
+0 0 * * * {{ tuned_admin_tunedadm }} profile {{ tuned_admin_profile }}
+{% endif %}

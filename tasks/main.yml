@@ -3,7 +3,7 @@
   copy: src=../files/profiles/ dest={{ tuned_config_dir }}
 
 - name: Install cron job for tuned profile changes
-  copy: src=../files/crond.tuned dest=/etc/cron.d/tuned
+  template: src=../templates/crond.tuned dest=/etc/cron.d/tuned
 
 - name: Get active profile
   shell: "{{ tuned_admin_tunedadm }} active | grep '{{ tuned_admin_profile }}'"
