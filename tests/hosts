@@ -1,2 +1,2 @@
 [all]
-localhost
+localhost tuned_admin_profile='balanced'

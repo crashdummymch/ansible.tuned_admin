@@ -6,14 +6,17 @@
   template: src=../templates/crond.tuned dest=/etc/cron.d/tuned
 
 - name: Get active profile
-  shell: "{{ tuned_admin_tunedadm }} active | grep '{{ tuned_admin_profile }}'"
+  shell: "{{ tuned_admin_tunedadm }} active | grep -E '{{ tuned_admin_profile }}|No current active profile.' | sed 's/No current active profile./Off/; s/Current active profile:\\s//'"
   ignore_errors: yes
   register: tuned_profile
   changed_when: tuned_profile.rc != 0
   failed_when: tuned_profile.rc != 1 and tuned_profile.rc != 0
   tags: tuned
 
+- name: tuned_profile
+  debug: var=tuned_profile verbosity=2
+
 - name: Set profile to "{{ tuned_admin_profile }}"
-  shell: "{{ tuned_admin_tunedadm }} {{ tuned_admin_profile }}"
-  when: tuned_profile.rc != 0 and "{{ tuned_admin_profile }}" != ''
+  shell: "{{ tuned_admin_tunedadm }} profile {{ tuned_admin_profile }}"
+  when: tuned_profile.stdout != "{{ tuned_admin_profile }}" and "{{ tuned_admin_profile }}" != ''
   tags: tuned
