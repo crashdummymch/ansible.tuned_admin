@@ -13,7 +13,7 @@
   failed_when: tuned_profile.rc != 1 and tuned_profile.rc != 0
   tags: tuned
 
-- name: tuned_profile
+- name: Debug tuned_profile register
   debug: var=tuned_profile verbosity=2
 
 - name: Set profile to "{{ tuned_admin_profile }}"
