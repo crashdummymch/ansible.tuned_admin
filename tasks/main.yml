@@ -1,0 +1,19 @@
+---
+- name: Install custom profiles
+  copy: src=../files/profiles/ dest={{ tuned_config_dir }}
+
+- name: Install cron job for tuned profile changes
+  copy: src=../files/crond.tuned dest=/etc/cron.d/tuned
+
+- name: Get active profile
+  shell: "{{ tuned_admin_tunedadm }} active | grep '{{ tuned_admin_profile }}'"
+  ignore_errors: yes
+  register: tuned_profile
+  changed_when: tuned_profile.rc != 0
+  failed_when: tuned_profile.rc != 1 and tuned_profile.rc != 0
+  tags: tuned
+
+- name: Set profile to "{{ tuned_admin_profile }}"
+  shell: "{{ tuned_admin_tunedadm }} {{ tuned_admin_profile }}"
+  when: tuned_profile.rc != 0 and "{{ tuned_admin_profile }}" != ''
+  tags: tuned

@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Michael C. Hoffman
+  description: Manage tuned profiles and active profile
+  license: GPLv3
+  min_ansible_version: 1.0
+  platforms:
+    - name: EL
+      version:
+        - all
+  galaxy_tags:
+    - system
+    - tuned
+dependencies:
+  - { role: crashdummymch.tuned }
