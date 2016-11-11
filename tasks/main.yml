@@ -1,9 +1,11 @@
 ---
 - name: Install custom profiles
   copy: src=../files/profiles/ dest={{ tuned_config_dir }}
+  tags: tuned
 
 - name: Install cron job for tuned profile changes
   template: src=../templates/crond.tuned dest=/etc/cron.d/tuned
+  tags: tuned
 
 - name: Get active profile
   shell: "{{ tuned_admin_tunedadm }} active | grep -E '{{ tuned_admin_profile }}|No current active profile.' | sed 's/No current active profile./Off/; s/Current active profile:\\s//'"
@@ -15,6 +17,7 @@
 
 - name: Debug tuned_profile register
   debug: var=tuned_profile verbosity=2
+  tags: tuned
 
 - name: Set profile to "{{ tuned_admin_profile }}"
   shell: "{{ tuned_admin_tunedadm }} profile {{ tuned_admin_profile }}"
